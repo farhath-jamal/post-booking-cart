@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KT — Post Booking Cart</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #f5f5f4;
+      font-family: 'Georgia', serif;
+      color: #1c1917;
+      line-height: 1.7;
+      padding: 48px 24px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #e7e5e4;
+      border-radius: 4px;
+      padding: 56px 64px;
+    }
+
+    /* Typography */
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: #0c0a09;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-top: 48px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e7e5e4;
+      color: #0c0a09;
+      font-family: 'Georgia', serif;
+    }
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      color: #292524;
+      font-family: 'Georgia', serif;
+    }
+
+    p {
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+    }
+
+    /* Blockquote / note */
+    blockquote {
+      border-left: 3px solid #a8a29e;
+      padding: 10px 16px;
+      margin: 16px 0;
+      background: #fafaf9;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.9rem;
+      color: #57534e;
+    }
+
+    blockquote p {
+      margin-bottom: 0;
+    }
+
+    /* Intro blockquote (the lead one) */
+    .lead-note {
+      border-left: 3px solid #0ea5e9;
+      background: #f0f9ff;
+      color: #0c4a6e;
+      padding: 12px 18px;
+      margin-bottom: 32px;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.93rem;
+    }
+
+    /* Lists */
+    ul,
+    ol {
+      padding-left: 24px;
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    li>ul,
+    li>ol {
+      margin-top: 5px;
+      margin-bottom: 0;
+    }
+
+    /* Code */
+    code {
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 0.82em;
+      background: #f5f5f4;
+      border: 1px solid #e7e5e4;
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: #b45309;
+    }
+
+    pre {
+      background: #1c1917;
+      color: #d6d3d1;
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 0.83rem;
+      padding: 18px 22px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 14px 0 18px;
+      line-height: 1.6;
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 0.9rem;
+    }
+
+    thead tr {
+      background: #f5f5f4;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #78716c;
+      border-bottom: 2px solid #e7e5e4;
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f5f5f4;
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #fafaf9;
+    }
+
+    /* HR */
+    hr {
+      border: none;
+      border-top: 1px solid #e7e5e4;
+      margin: 36px 0;
+    }
+
+    /* Bold / italic */
+    strong {
+      font-weight: 700;
+      color: #0c0a09;
+    }
+
+    em {
+      font-style: italic;
+      color: #57534e;
+    }
+
+    /* API step blocks */
+    .api-step {
+      margin: 14px 0;
+      padding-left: 16px;
+      border-left: 2px solid #e7e5e4;
+    }
+
+    .api-step strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #0369a1;
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 0.88rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .container {
+        padding: 32px 24px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      table {
+        font-size: 0.82rem;
+      }
+
+      th,
+      td {
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <h1>KT — Post Booking Cart</h1>
+    <div class="lead-note">
+      <code>flowId</code> is one of the request/response headers, which remains the same throughout a flow and is unique
+      across other flows.
+    </div>
+
+    <hr>
+
+    <h2>V4 API Flows</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Flow</th>
+          <th>API Sequence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Prime Booking (With Ancillaries)</strong></td>
+          <td>Shop → Price → ListServices / ListSeats / Price → CreateOrder</td>
+        </tr>
+        <tr>
+          <td><strong>Deferred</strong></td>
+          <td>RepriceOrder → AcceptRepricedOrder</td>
+        </tr>
+        <tr>
+          <td><strong>Reissue</strong></td>
+          <td>ReshopOrder → RequoteOrder → UpdateOrderItems</td>
+        </tr>
+        <tr>
+          <td><strong>Cancel (Paid)</strong></td>
+          <td>RefundQuote → CancelOrder</td>
+        </tr>
+        <tr>
+          <td><strong>Post Booking Ancillaries</strong></td>
+          <td>ListServices / ListSeats → RequoteOrder → ListServices / ListSeats / RequoteOrder → UpdateOrderItems</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Independent APIs <em>(no relation to<code>flowId</code>)</em></h3>
+    <ul>
+      <li>RetrieveOrder</li>
+      <li>Unpaid Cancel: CancelOrder</li>
+      <li>Split Booking: UpdatePax</li>
+      <li>APIS Addition: UpdatePax</li>
+      <li>UpdateOrderParameters</li>
+      <li>AcceptChange</li>
+    </ul>
+
+    <hr>
+
+    <h2><code>flowId</code> Lifecycle</h2>
+
+    <p>In the aggregator model, the owner of <code>flowId</code> is <code>connector-vdc-v1</code> or
+      <code>connector-vdc-v3</code>.</p>
+    <ul>
+      <li><code>connector-vdc-v1</code> communicates to <code>offermanagement-v1</code></li>
+      <li><code>connector-vdc-v3</code> communicates to <code>offermanagement</code> (v3)</li>
+    </ul>
+
+    <h3>Flow-Starting APIs <em>(generates <code>flowId</code>; customer must NOT send <code>flowId</code> in
+        request)</em></h3>
+    <ul>
+      <li>Shop</li>
+      <li>RepriceOrder</li>
+      <li>ReshopOrder</li>
+      <li>RefundQuote</li>
+      <li><em>(Unpaid Cancel flow)</em> CancelOrder</li>
+      <li><em>(Post Booking Ancillaries Addition flow)</em> 1st ListServices or 1st ListSeats — whichever is called
+        first</li>
+    </ul>
+
+    <h3>Subsequent APIs <em>(must pass <code>flowId</code> from the preceding step)</em></h3>
+    <ul>
+      <li>Price</li>
+      <li><em>(Prime Booking with ancillaries)</em> ListServices / ListSeats</li>
+      <li>CreateOrder</li>
+      <li>AcceptRepricedOrder</li>
+      <li>RequoteOrder</li>
+      <li>UpdateOrderItems</li>
+      <li><em>(Paid Cancel flow)</em> CancelOrder</li>
+      <li><em>(Post Booking Ancillaries Addition)</em> ListServices / ListSeats — excluding the 1st ListServices or 1st
+        ListSeats (whichever was first)</li>
+    </ul>
+
+    <h3>Flow-Ending APIs <em>(<code>flowId</code> is consumed; must NOT be sent in the next request)</em></h3>
+    <ul>
+      <li>CreateOrder</li>
+      <li>AcceptRepricedOrder</li>
+      <li>UpdateOrderItems</li>
+      <li>CancelOrder</li>
+    </ul>
+
+    <h3>APIs With No Relation to <code>flowId</code></h3>
+    <ul>
+      <li>RetrieveOrder</li>
+      <li><em>(Unpaid Cancel)</em> CancelOrder</li>
+      <li><em>(Split Booking )</em>UpdatePax</li>
+      <li><em>(APIS Addition )</em>UpdatePax</li>
+      <li>UpdateOrderParameters</li>
+      <li>AcceptChange</li>
+    </ul>
+
+    <hr>
+
+    <h2>V1 vs V4 Flow Comparison</h2>
+
+    <h3>V1 Flow</h3>
+    <pre><code>OrderRetrieve → PostServiceList → [Optional: FlightPrice] → OrderChange</code></pre>
+    <blockquote>
+      <p><strong>Note:</strong> The UI restricts selection to one category, so only a single category is supported in
+        V1.</p>
+    </blockquote>
+
+    <h3>V4 Flow</h3>
+    <pre><code>ListServices / ListSeats → RequoteOrder → ListServices / ListSeats / RequoteOrder → UpdateOrderItems</code></pre>
+
+    <hr>
+
+    <h2>Schema Overview</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>API</th>
+          <th>Request</th>
+          <th>Response</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ListServices</td>
+          <td><code>ServiceListRQ</code></td>
+          <td><code>ServiceListRS</code></td>
+        </tr>
+        <tr>
+          <td>ListSeats</td>
+          <td><code>SeatAvailabilityRQ</code></td>
+          <td><code>SeatAvailabilityRS</code></td>
+        </tr>
+        <tr>
+          <td>RequoteOrder</td>
+          <td><code>OrderRequoteRQ</code></td>
+          <td><code>OrderRequoteRS</code></td>
+        </tr>
+        <tr>
+          <td>UpdateOrderItems</td>
+          <td><code>UpdateOrderItemsRQ</code></td>
+          <td><code>OrderViewRS</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Post Booking Ancillary Flows</h2>
+    <p>The customer can call either <code>ListServices</code> or <code>ListSeats</code> first. All supported sequences
+      are documented below.</p>
+
+    <hr>
+
+    <h3>Flow 1: ListServices → ListSeats → RequoteOrder → UpdateOrderItems</h3>
+
+    <div class="api-step"><strong>ListServices</strong>
+      <ul>
+        <li>No <code>flowId</code> in request → response returns <code>flowId</code> (header)</li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (generated at this step)</li>
+        <li><code>segmentIds</code>, <code>flightIds</code> — standardised from RetrieveOrder</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>ListSeats</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from ListServices response → response returns <code>flowId</code></li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (passed in the request header)</li>
+        <li><code>segmentIds</code>, <code>flightIds</code> — standardised from RetrieveOrder</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>RequoteOrder</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from ListSeats response</li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (passed in the request header)</li>
+        <li><code>segmentIds</code>, <code>flightIds</code> — standardised from RetrieveOrder</li>
+        <li>Offer item IDs standardised</li>
+        <li>Cart is created — cart is same as <code>OrderRequoteRS</code> (including augmentations)</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>UpdateOrderItems</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from RequoteOrder response</li>
+      </ul>
+    </div>
+
+    <hr>
+
+    <h3>Flow 2: ListSeats → ListServices → RequoteOrder → UpdateOrderItems</h3>
+
+    <div class="api-step"><strong>ListSeats</strong>
+      <ul>
+        <li>No <code>flowId</code> in request → response returns <code>flowId</code></li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (generated at this step)</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>ListServices</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from ListSeats response → response returns <code>flowId</code></li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (passed in the request header)</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>RequoteOrder</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from ListServices response</li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (passed in the request header)</li>
+      </ul>
+    </div>
+    <blockquote>
+      <p><strong>Note:</strong> Since the underlying V1 only supports pricing with a single category, the service name
+        of each offer item in <code>ServiceListRS</code> is augmented (e.g.,
+        <code>"BAG:1ST BAG UPTO50LB23KG 62LI158CM"</code>). For seat offer items, the category is known from the
+        request, as the selected seat is mandatory in V4 <code>OrderRequoteRQ</code>.</p>
+    </blockquote>
+    <div class="api-step"><strong>UpdateOrderItems</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from RequoteOrder response</li>
+      </ul>
+    </div>
+
+    <hr>
+
+    <h3>Flow 3: ListSeats → RequoteOrder → UpdateOrderItems</h3>
+
+    <div class="api-step"><strong>ListSeats</strong>
+      <ul>
+        <li>No <code>flowId</code> in request → response returns <code>flowId</code></li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (generated at this step)</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>RequoteOrder</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from ListSeats response</li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (passed in the request header)</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>UpdateOrderItems</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from RequoteOrder response</li>
+      </ul>
+    </div>
+
+    <hr>
+
+    <h3>Flow 4: ListServices → RequoteOrder → UpdateOrderItems</h3>
+
+    <div class="api-step"><strong>ListServices</strong>
+      <ul>
+        <li>No <code>flowId</code> in request → response returns <code>flowId</code></li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (generated at this step)</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>RequoteOrder</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from ListServices response</li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (passed in the request header)</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>UpdateOrderItems</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from RequoteOrder response</li>
+      </ul>
+    </div>
+
+    <hr>
+
+    <h3>Flow 5: ListServices → RequoteOrder → ListSeats → RequoteOrder → UpdateOrderItems</h3>
+
+    <div class="api-step"><strong>ListServices</strong>
+      <ul>
+        <li>No <code>flowId</code> in request → response returns <code>flowId</code></li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (generated at this step)</li>
+        <li><code>segmentIds</code>, <code>flightIds</code> — standardised from RetrieveOrder</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>RequoteOrder</strong> <em>(1st call)</em>
+      <ul>
+        <li><code>flowId</code> must be passed from ListServices response</li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (passed in the request header)</li>
+        <li><code>segmentIds</code>, <code>flightIds</code> — standardised from RetrieveOrder</li>
+        <li>Offer item IDs standardised</li>
+        <li>Cart is created — cart is same as <code>OrderRequoteRS</code> (including augmentations)</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>ListSeats</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from RequoteOrder response</li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (passed in the request header)</li>
+        <li><code>segmentIds</code>, <code>flightIds</code> — standardised from cart</li>
+        <li>Offer item IDs in the response that are present in cart are standardised</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>RequoteOrder</strong> <em>(2nd call)</em>
+      <ul>
+        <li><code>flowId</code> must be passed from ListSeats response</li>
+        <li>Response: <code>offerId</code> = <code>flowId</code> (passed in the request header)</li>
+        <li><code>segmentIds</code>, <code>flightIds</code> — standardised from RetrieveOrder</li>
+        <li>Offer item IDs standardised</li>
+        <li>Cart is updated</li>
+      </ul>
+    </div>
+    <div class="api-step"><strong>UpdateOrderItems</strong>
+      <ul>
+        <li><code>flowId</code> must be passed from RequoteOrder response</li>
+      </ul>
+    </div>
+
+    <hr>
+
+    <h2>Cart</h2>
+
+    <h3>Cart Key Format</h3>
+    <pre><code>&lt;application_name&gt;:&lt;ownerCode&gt;:&lt;cartId (= flowId)&gt;</code></pre>
+    <p><strong>Example:</strong></p>
+    <pre><code>cart:connector-vdc-v1:AF:e94bd69d-1996-40d6-b67e-4e6eb27cf99f</code></pre>
+
+    <h3>What Is a Cart?</h3>
+    <p>A cart is <strong>one offer and its offer items</strong>.</p>
+    <p><code>OrderRequoteRS</code> is the cart. Offer items can be added, updated, or removed from the cart. Once added,
+      offer items are not changed. The cart represents the state of offer items the user has selected.</p>
+
+    <hr>
+
+    <h2>Routing</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>API</th>
+          <th>Routes To</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>RequoteOrder</td>
+          <td>Reissue (v3) or Post Booking Ancillaries (v1)</td>
+        </tr>
+        <tr>
+          <td>UpdateOrderItems</td>
+          <td>Reissue (v3) or Post Booking Ancillaries (v1)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Reissue Flow</h3>
+    <pre><code>ReshopOrder → RequoteOrder → UpdateOrderItems</code></pre>
+    <blockquote>
+      <p><code>ReshopOrder</code> response creates an augmentation storing the flow-starting API, i.e.,
+        <code>ReshopOrder</code> (<code>FLOW_INITIATION_OPERATION</code>).</p>
+    </blockquote>
+
+    <hr>
+
+    <h2>RequoteOrder / UpdateOrderItems — Routing Logic</h2>
+
+    <p>To determine if a request is for Post Booking Ancillaries, the category of each offer item in
+      <code>OrderRequoteRQ</code> is identified.</p>
+    <p><strong>If the category cannot be found for any offer item</strong>, one of two cases applies:</p>
+    <ul>
+      <li>The Post Booking Ancillaries cart has expired — for offer items already in the cart, the category cannot be
+        found if the customer has not provided the augmentations (customers may choose not to provide augmentations
+        after the first pricing of an offer item).</li>
+      <li>The Reissue cart has expired.</li>
+    </ul>
+    <p>In both cases, an error is thrown: <strong>invalid or expired offer</strong>.</p>
+
+    <h3>Single-Category Validation</h3>
+    <p>For each <code>OrderRequoteRQ</code>, all offer items must belong to a <strong>single unique category</strong>.
+      If multiple categories are detected, an error is returned requesting the customer to select only offer items of
+      one category.</p>
+    <blockquote>
+      <p>V4 can support multiple-category addition, but since V1 currently does not support this, validation is
+        enforced. This validation can be:</p>
+      <ul>
+        <li>Removed entirely if V1 adds support for all airlines.</li>
+        <li>Made airline-configurable if V1 adds support for select airlines only.</li>
+      </ul>
+    </blockquote>
+
+    <hr>
+
+    <h2>Cart Creation — RequoteOrder</h2>
+
+    <h3>Case 1: <code>pricedInd = true</code> (Pre-priced items only) — No call to V1</h3>
+    <p>The full <code>OrderRequoteRS</code> is constructed on the V4 side. Offer items are created from augmentations
+      and the selected offer item.</p>
+    <p><strong>Augmentations contain:</strong></p>
+    <ul>
+      <li><code>segmentIds</code> or <code>journeyIds</code> associated with the offer item</li>
+      <li>Service details: name and airline taxonomy</li>
+      <li>Price</li>
+      <li><code>paxIds</code> — mapped directly from <code>OrderRequoteRQ</code></li>
+    </ul>
+    <p><strong>Processing steps:</strong></p>
+    <ol>
+      <li>Validate request command (offer part mainly)</li>
+      <li>Process augmentations at offer item level:
+        <ul>
+          <li>Propagate V1 segment IDs for future <code>OrderChange</code> calls to V1</li>
+          <li>Common offer item augmentations (<code>offerId</code>, <code>responseId</code> from
+            <code>ServiceListRS</code> / <code>SeatAvailabilityRS</code>) are carried forward, as V4 has no direct
+            mapping for <code>responseId</code></li>
+          <li>Standardise offer item IDs using the identifier: <code>(paxId, segmentIds, serviceDefName)</code> for
+            services; <code>(paxId, segmentId, seat)</code> for seats</li>
+          <li>Validate that all offer items belong to a single category; throw an error if multiple categories detected
+          </li>
+        </ul>
+      </li>
+      <li>Call <code>OrderRetrieve</code> to V1 (first RequoteOrder call only) — primarily to populate
+        <code>journeyOverview</code>; for pre-priced items, take <code>paxSegments</code>, <code>paxJourneys</code>,
+        <code>originDestinations</code>, <code>datedMarketingSegments</code>, <code>datedOperatingSegments</code>, etc.
+        from <code>OrderViewRS</code></li>
+      <li>Since only pre-priced offer items are present, no call to V1</li>
+      <li>Create cart:
+        <ul>
+          <li>Cart action = <strong>ADD</strong> for all offer items in the request</li>
+          <li>Add pre-priced offer items to the cart</li>
+          <li>Handle seat locks if seat offer items are present</li>
+          <li>Populate the rest of the response from <code>OrderViewRS</code> and <code>OrderRequoteRQ</code></li>
+        </ul>
+      </li>
+    </ol>
+
+    <hr>
+
+    <h3>Case 2: <code>pricedInd = false</code> (Non-pre-priced items only) — Call to V1 required</h3>
+    <p><strong>Processing steps:</strong></p>
+    <ol>
+      <li>Validate request command (offer part mainly)</li>
+      <li>Process augmentations at offer item level:
+        <ul>
+          <li>Find V1 segment IDs for each offer item to be sent in the V1 request</li>
+          <li>Store the bag's requested quantity and unit price — to verify whether V1 has honoured the quantity</li>
+          <li>Propagate V1 segment IDs and, for non-pre-priced bag offer items, the unit price for future RequoteOrder
+            calls</li>
+          <li>Common offer item augmentations (<code>offerId</code>, <code>responseId</code>) are carried forward</li>
+          <li>Standardise offer item IDs</li>
+          <li>Validate single-category rule; throw an error if multiple categories detected</li>
+        </ul>
+      </li>
+      <li>Call <code>OrderRetrieve</code> to V1 (first RequoteOrder call only) — to populate
+        <code>journeyOverview</code> and standardise segment IDs and journey IDs for non-pre-priced items</li>
+      <li>Call V1 with non-pre-priced offer items:
+        <ul>
+          <li><code>order_requote_rq</code> (V4) → <code>FlightPriceRQ</code> (V1)</li>
+          <li><code>FlightPriceRS</code> (V1) → <code>order_requote_rs</code> (V4)</li>
+          <li>Converted V4 response carries offer item IDs from the request; segment IDs and journey IDs are
+            standardised</li>
+        </ul>
+      </li>
+      <li>Create cart — using the supplier-converted V4 <code>OrderRequoteRS</code>, saved with the offer expiration
+        time limit:
+        <ul>
+          <li>Cart action = <strong>ADD</strong> for all offer items in the request</li>
+          <li>Add non-pre-priced offer items to the cart</li>
+          <li>Populate the rest of the response from the supplier <code>OrderRequoteRS</code></li>
+        </ul>
+      </li>
+    </ol>
+
+    <hr>
+
+    <h3>Case 3: <code>pricedInd = true</code> and <code>false</code> (Mixed) — Call to V1 required</h3>
+    <p><strong>Processing steps:</strong></p>
+    <ol>
+      <li>Validate request command (offer part mainly)</li>
+      <li>Process augmentations at offer item level:
+        <ul>
+          <li>Find V1 segment IDs for each offer item to be sent in the V1 request</li>
+          <li>Store the bag's requested quantity and unit price — to verify whether V1 has honoured the quantity</li>
+          <li>Propagate V1 segment IDs and non-pre-priced bag unit price for future RequoteOrder calls</li>
+          <li>Common offer item augmentations (<code>offerId</code>, <code>responseId</code>) are carried forward</li>
+          <li>Standardise offer item IDs</li>
+          <li>Validate single-category rule; throw an error if multiple categories detected</li>
+        </ul>
+      </li>
+      <li>Call <code>OrderRetrieve</code> to V1 (first RequoteOrder call only) — to populate
+        <code>journeyOverview</code> and standardise segment IDs and journey IDs for non-pre-priced items</li>
+      <li>Call V1 with non-pre-priced offer items:
+        <ul>
+          <li><code>order_requote_rq</code> (V4) → <code>FlightPriceRQ</code> (V1)</li>
+          <li><code>FlightPriceRS</code> (V1) → <code>order_requote_rs</code> (V4)</li>
+          <li>Converted V4 response carries offer item IDs from the request; segment IDs and journey IDs are
+            standardised</li>
+        </ul>
+      </li>
+      <li>Create cart — using the supplier-converted V4 <code>OrderRequoteRS</code>, saved with the offer expiration
+        time limit:
+        <ul>
+          <li>Cart action = <strong>ADD</strong> for all offer items in the request</li>
+          <li>Add non-pre-priced offer items to the cart</li>
+          <li>Add pre-priced offer items to the cart</li>
+          <li>Handle seat locks if seat offer items are present</li>
+          <li>Populate the rest of the response from the supplier <code>OrderRequoteRS</code></li>
+        </ul>
+      </li>
+    </ol>
+
+    <hr>
+
+    <h3>Case 4: Reissue — Always calls V3</h3>
+    <ul>
+      <li><code>order_requote_rq</code> (V4) → <code>order_requote_rq</code> (V3)</li>
+      <li><code>order_requote_rq</code> (V3) → <code>order_requote_rs</code> (V4)</li>
+      <li>Cart is created by saving the supplier-converted V4 <code>OrderRequoteRS</code> as-is</li>
+    </ul>
+
+    <hr>
+
+    <h2>Cart Update Logic</h2>
+
+    <p>When updating the cart, the following steps are performed in order:</p>
+    <ol>
+      <li>Process the cart and capture the offer item type and associated services for each offer item</li>
+      <li>Identify the action for each offer item — both in the cart and in the request</li>
+      <li>Execute actions in sequence:</li>
+    </ol>
+
+    <p><strong>Remove</strong> marked offer items</p>
+    <ul>
+      <li>Release any occupied seats</li>
+    </ul>
+
+    <p><strong>Update</strong> marked offer items</p>
+    <ul>
+      <li><em>Non-pre-priced offer items first:</em>
+        <ul>
+          <li>Release the seat if it is a seat offer item</li>
+          <li>Add the seat offer item</li>
+        </ul>
+      </li>
+      <li><em>Pre-priced offer items second</em></li>
+    </ul>
+
+    <p><strong>Retain</strong> marked offer items</p>
+    <ul>
+      <li><em>Non-pre-priced offer items first</em></li>
+      <li><em>Pre-priced offer items second</em></li>
+    </ul>
+
+    <p><strong>Add</strong> marked offer items</p>
+    <ul>
+      <li><em>Non-pre-priced offer items first</em></li>
+      <li><em>Pre-priced offer items second</em></li>
+    </ul>
+
+    <h2>Cart Clear</h2>
+
+    <p>
+      The cart is cleared upon successful completion of a flow-ending API. As part of this process, the existing
+      OrderRequoteRS is removed and the cart is replaced with the orderId to indicate that the cart has been consumed.
+    </p>
+  </div>
+</body>
+
+</html>
